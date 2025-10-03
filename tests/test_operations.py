@@ -342,13 +342,41 @@ def test_division_with_zero_numerator():
 # -----------------------------------------------------------------------------------
 
 def test_power_positive_exponent():
-    assert Operation.power(2.0, 3.0) == 8.0
+    # Arrange
+    a = 2.0
+    b = 3.0
+    expected_result = 8.0
+
+    # Act
+    result = Operation.power(a, b)
+
+    # Assert
+    assert result == expected_result, f"Expected {a} ^ {b} to be {expected_result}, got {result}"
 
 def test_power_zero_exponent():
-    assert Operation.power(5.0, 0.0) == 1.0
+    # Arrange
+    a = 2.0
+    b = 0.0
+    expected_result = 1.0
+
+    # Act
+    result = Operation.power(a, b)
+
+    # Assert
+    assert result == expected_result, f"Expected {a} ^ {b} to be {expected_result}, got {result}"
 
 def test_power_negative_exponent():
-    assert Operation.power(2.0, -2.0) == 0.25
+    # Arrange
+    a = 2.0
+    b = -1.0
+    expected_result = 0.5
+
+    # Act
+    result = Operation.power(a, b)
+
+    # Assert
+    assert result == expected_result, f"Expected {a} ^ {b} to be {expected_result}, got {result}"
+
     
 # -----------------------------------------------------------------------------------
 # Test Invalid Input Types (Negative Testing)
@@ -359,6 +387,7 @@ def test_power_negative_exponent():
     (Operation.subtraction, 10.0, '5', TypeError),
     (Operation.multiplication, '10', '5', TypeError),
     (Operation.division, 10.0, '5', TypeError),
+    (Operation.power, 10.0, '5', TypeError),
 ])
 def test_operations_invalid_input_types(calc_method, a, b, expected_exception):
     """

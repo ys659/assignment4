@@ -125,20 +125,28 @@ def test_divide_calculation_execute_division_by_zero():
 def test_power_calculation_execute_positive(mock_power):
     a, b = 2.0, 3.0
     expected = 8.0
-    mock_power.return_value = expected
-    calc = PowerCalculation(a, b)
-    result = calc.execute()
+    mock_power.return_value = expected_result
+    power_calc = PowerCalculation(a, b)
+    result = power_calc.execute()
     mock_power.assert_called_once_with(a, b)
-    assert result == expected
+    assert result == expected_result
 
 
-def test_factory_creates_power_calculation():
-    a, b = 2.0, 3.0
+def test_power_calculation_execute_negativee(mock_power):
+    a, b = 10.0, 5.0
     calc = CalculationFactory.create_calculation('power', a, b)
     assert isinstance(calc, PowerCalculation)
     assert calc.a == a
     assert calc.b == b
 
+@patch.object(Operation, 'power')
+def test_power_calculation_execute_negative(mock_multiplication):
+    a, b = 10.0, 5.0
+    mock_multiplication.side_effect = Exception("Power error")
+    multiply_calc = PowerCalculation(a, b)
+    with pytest.raises(Exception) as exc_info:
+        power_calc.execute()
+    assert str(exc_info.value) == "Power error"
 
 # -----------------------------------------------------------------------------------
 # Test CalculationFactory
@@ -163,7 +171,10 @@ def test_factory_creates_divide_calculation():
     calc = CalculationFactory.create_calculation('divide', 10.0, 5.0)
     assert isinstance(calc, DivideCalculation)
 
-
+def test_factory_creates_power_calculation():
+    calc = CalculationFactory.create_calculation('power', 10.0, 5.0)
+    assert isinstance(calc, PowerCalculation)
+    
 def test_factory_create_unsupported_calculation():
     with pytest.raises(ValueError) as exc_info:
         CalculationFactory.create_calculation('modulus', 10.0, 5.0)
